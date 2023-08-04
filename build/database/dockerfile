@@ -1,0 +1,14 @@
+FROM mysql:8.0
+
+ENV MYSQL_ROOT_PASSWORD password
+
+# migrateツールのインストール
+RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.0/migrate.linux-amd64.tar.gz -o migrate.tar.gz \
+    && tar xvzf migrate.tar.gz \
+    && rm migrate.tar.gz \
+    && ls -la \
+    && chmod +x migrate \
+    && mv migrate /usr/local/bin/
+
+# データボリュームのマウント
+VOLUME /var/lib/mysql

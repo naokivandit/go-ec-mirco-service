@@ -1,0 +1,18 @@
+# ベースイメージの指定
+FROM golang:1.20.0
+
+# 作業ディレクトリを設定
+WORKDIR /app
+
+# # Goモジュールの依存関係をコピー
+# COPY ../../go.mod .
+# COPY ../../go.sum .
+
+# # 依存関係をインストール
+# RUN go mod download
+
+# ソースコードをコピー
+COPY . .
+
+# コンパイルと実行
+CMD ["go", "run", "cmd/product/main.go"]

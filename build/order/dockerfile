@@ -1,0 +1,30 @@
+# ベースイメージの指定
+FROM golang:1.20.0
+
+# 作業ディレクトリを設定
+WORKDIR /app
+
+# # Goモジュールの依存関係をコピー
+# COPY ../../go.mod .
+# COPY go.sum .
+
+# # 依存関係をインストール
+# RUN go mod download
+
+
+# # ソースコードをコピー
+COPY . .
+
+# コンパイルと実行
+# CMD ["ls", "-la"]
+
+RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.0/migrate.linux-amd64.tar.gz -o migrate.tar.gz \
+    && tar xvzf migrate.tar.gz \
+    && rm migrate.tar.gz \
+    && ls -la \
+    && chmod +x migrate \
+    && mv migrate /usr/local/bin/
+
+
+
+CMD ["go", "run", "cmd/order/main.go"]
