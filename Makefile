@@ -10,6 +10,9 @@ build:
 up:
 	docker-compose up
 
+down:
+	docker-compose down
+
 order-migrate-create:
 	docker-compose exec database migrate create -ext sql -dir db/migrations/order -seq yyy
 
@@ -23,7 +26,7 @@ product-migrate-create:
 	docker-compose exec database migrate create -ext sql -dir db/migrations/product -seq xxx
 
 product-migrate-up:
-	docker-compose exec proddatabaseuct migrate -path=db/migrations/product -database="mysql://root:password@tcp(database:3306)/product" up
+	docker-compose exec database migrate -path=db/migrations/product -database="mysql://root:password@tcp(database:3306)/product" up
 
 product-migrate-down:
 	docker-compose exec database migrate -path=db/migrations/product -database="mysql://root:password@tcp(database:3306)/product" down

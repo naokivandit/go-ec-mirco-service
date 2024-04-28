@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="newrelic.js"></script> <!-- New Relic Browserのスクリプトを読み込む -->
+
+    <title>Call Go Backend</title>
+</head>
+<body>
+    <form id="orderForm">
+        <label for="productId">Product ID:</label>
+        <input type="text" id="productId" name="productId">
+        <button type="submit">Submit Order</button>
+    </form>
+
+    <button id="getOrdersButton">Get Orders</button>
+
+
+    <script>
+        document.getElementById("orderForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // フォームのデフォルトの動作を停止
+
+            var productId = document.getElementById("productId").value;
+            var formData = new FormData();
+            formData.append("product_id", productId);
+
+            // バックエンドのURL
+            var backendURL = "http://localhost:8080"; // サーバーがローカルで実行されている場合
+
+            // POSTリクエストを送信
+            fetch(backendURL + "/orders", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                // レスポンスが成功した場合
+                if (response.ok) {
+                    return response.text(); // レスポンスのテキストを取得
+                }
+                throw new Error("Network response was not ok.");
+            })
+            .then(data => {
+                // レスポンスのテキストを表示
+                console.log("Response from backend:", data);
+                alert("Response from backend: " + data);
+            })
+            .catch(error => {
+                // エラーが発生した場合
+                console.error("Error:", error);
+                alert("Error: " + error.message);
+            });
+        });
+
+        document.getElementById("getOrdersButton").addEventListener("click", function() {
+            // バックエンドのURL
+            var backendURL = "http://localhost:8080"; // サーバーがローカルで実行されている場合
+
+            // GETリクエストを送信
+            fetch(backendURL + "/orders")
+            .then(response => {
+                // レスポンスが成功した場合
+                if (response.ok) {
+                    return response.text(); // レスポンスのテキストを取得
+                }
+                throw new Error("Network response was not ok.");
+            })
+            .then(data => {
+                // レスポンスのテキストを表示
+                console.log("Response from backend:", data);
+                alert("Response from backend: " + data);
+            })
+            .catch(error => {
+                // エラーが発生した場合
+                console.error("Error:", error);
+                alert("Error: " + error.message);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -11,6 +11,14 @@ require (
 )
 
 require (
+	github.com/golang/protobuf v1.5.3 // indirect
+	golang.org/x/net v0.10.0 // indirect
+	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
+	google.golang.org/grpc v1.56.3 // indirect
+	google.golang.org/protobuf v1.30.0 // indirect
+)
+
+require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-gorp/gorp/v3 v3.1.0 // indirect
 	github.com/golang-migrate/migrate/v4 v4.16.2 // indirect
@@ -22,6 +30,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/newrelic/go-agent/v3 v3.32.0
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/rubenv/sql-migrate v1.5.1 // indirect
 	github.com/spf13/afero v1.9.5 // indirect

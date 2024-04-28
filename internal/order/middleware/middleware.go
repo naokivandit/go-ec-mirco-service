@@ -8,8 +8,14 @@ import (
 
 // ApplyMiddleware ミドルウェアを適用したハンドラーを返す
 func ApplyMiddleware(handler http.Handler) http.Handler {
-	// CORSミドルウェアの設定
-	corsHandler := cors.Default().Handler(handler)
+	// CORSミドルウェアのカスタム設定
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"}, // すべてのアクセス元からのアクセスを許可
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: true,
+	})
 
-	return corsHandler
+	// CORSミドルウェアをハンドラーに適用
+	return c.Handler(handler)
 }
