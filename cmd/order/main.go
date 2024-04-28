@@ -44,7 +44,7 @@ func main() {
 
 	// ルーティングのセットアップ
 	router := mux.NewRouter()
-	routing.SetupRouting(router, deps)
+	routing.SetupRouting(app, router, deps)
 
 	// ミドルウェアのセットアップ
 	handler := middleware.ApplyMiddleware(router)

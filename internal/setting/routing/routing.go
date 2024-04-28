@@ -7,18 +7,19 @@ import (
 	"example.com/internal/setting/handler"
 	"example.com/internal/setting/usecase"
 	"github.com/gorilla/mux"
+	"github.com/newrelic/go-agent/v3/newrelic"
 )
 
 // SetupRouting ルーティングのセットアップを行う
-func SetupRouting(router *mux.Router, deps *di.Dependencies) {
-	setupSettingRouting(router, deps.SettingUsecase)
+func SetupRouting(app *newrelic.Application, router *mux.Router, deps *di.Dependencies) {
+	setupSettingRouting(app, router, deps.SettingUsecase)
 }
 
 // setupSettingRouting 設定関連のルーティングのセットアップを行う
-func setupSettingRouting(router *mux.Router, settingUsecase usecase.SettingUsecase) {
+func setupSettingRouting(app *newrelic.Application, router *mux.Router, settingUsecase usecase.SettingUsecase) {
 	settingHandler := handler.NewSettingHandler(settingUsecase)
 
 	// 設定関連のハンドラーを設定
 	settingRouter := router.PathPrefix("/setting").Subrouter()
-	settingRouter.HandleFunc("", settingHandler.SettingHandler).Methods(http.MethodGet)
+	settingRouter.HandleFunc(newrelic.WrapHandleFunc(app, "", settingHandler.SettingHandler)).Methods(http.MethodGet)
 }

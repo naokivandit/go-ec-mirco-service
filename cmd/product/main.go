@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"time"
 
 	"example.com/internal/product/common"
 	"example.com/internal/product/di"
 	"example.com/internal/product/middleware"
 	"example.com/internal/product/routing"
 	"github.com/gorilla/mux"
+	"github.com/newrelic/go-agent/v3/newrelic"
 )
 
 func main() {
@@ -18,6 +21,17 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	app, err := newrelic.NewApplication(
+		newrelic.ConfigAppName("product-service"),
+		newrelic.ConfigLicense("YOUR_LICENSE_KEY"),
+		newrelic.ConfigAppLogForwardingEnabled(true),
+		newrelic.ConfigDebugLogger(os.Stdout),
+	)
+	if err != nil {
+		log.Fatal("Error initializing New Relic:", err)
+	}
+	defer app.Shutdown(10 * time.Second)
 
 	// データベースへの接続
 	db, err := common.ConnectDB()
@@ -30,7 +44,7 @@ func main() {
 
 	// ルーティングのセットアップ
 	router := mux.NewRouter()
-	routing.SetupRouting(router, deps)
+	routing.SetupRouting(app, router, deps)
 
 	// ミドルウェアのセットアップ
 	handler := middleware.ApplyMiddleware(router)
